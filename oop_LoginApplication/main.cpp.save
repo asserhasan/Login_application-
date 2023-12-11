@@ -1,0 +1,68 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include "User.h"
+#include "Register.h"
+#include "Login.h"
+using namespace std;
+
+
+int main()
+{
+    display_menu();
+
+    int choice;
+    cin >> choice;
+    cout<<"\n\n";
+
+    switch(choice)
+    {
+    case 1:
+    {
+        Register x;
+        x.register_new_user();
+        break;
+    }
+    case 2:
+    {
+        Login y;
+        break;
+    }
+    case 3:
+    {
+
+        Login z;
+        break;
+    }
+    case 4:
+        cout<<"Thank You "<<endl;
+        break;
+    default:
+        cout<<"Please choose from the options given above .." <<endl;
+    } 
+
+
+    return 0;
+
+}
+
+void display_menu()
+{
+    cout << " +-------------------------------------------+" << endl;
+    cout << " |                    Menu                   |" << endl;
+    cout << " +-------------------------------------------+" << endl;
+    cout << " | 1. Register                               |" << endl;
+    cout << " |                                           |" << endl;
+    cout << " | 2. Login                                  |" << endl;
+    cout << " |                                           |" << endl;
+    cout << " | 3. Change Password                        |" << endl;
+    cout << " |                                           |" << endl;
+    cout << " | 4. Exit                                   |" << endl;
+    cout << " +-------------------------------------------+" << endl;
+
+    cout<<"Please Enter Your Choice : ";
+}
+
+
+

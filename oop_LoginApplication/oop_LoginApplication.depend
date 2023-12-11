@@ -1,0 +1,38 @@
+# depslib dependency file v1.0
+1695952885 source:d:\oop\oop_loginapplication\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"User.h"
+	"Register.h"
+	"Login.h"
+
+1695831038 source:d:\oop\oop_loginapplication\src\user.cpp
+	"User.h"
+	<fstream>
+
+1696079331 d:\oop\oop_loginapplication\include\user.h
+	<string>
+
+1696297105 source:d:\oop\oop_loginapplication\src\register.cpp
+	"Register.h"
+	<string>
+	<iostream>
+	<iomanip>
+	<fstream>
+	<regex>
+	<conio.h>
+
+1696296913 d:\oop\oop_loginapplication\include\register.h
+	<string>
+	<User.h>
+
+1695831038 source:d:\oop\oop_loginapplication\src\login.cpp
+	"Login.h"
+	<string>
+	<iostream>
+	<fstream>
+
+1695830896 d:\oop\oop_loginapplication\include\login.h
+	<User.h>
+

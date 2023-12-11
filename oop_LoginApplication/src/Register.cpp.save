@@ -1,0 +1,378 @@
+#include "Register.h"
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <regex>
+#include <conio.h>
+
+
+
+using namespace std;
+
+
+Register::Register()
+{
+//    cout<<"regis"<<endl;
+    //ctor
+}
+
+Register::~Register()
+{
+    //dtor
+}
+//registraion form
+void Register::register_new_user()
+{
+    cout << "    Registration\n";
+    cout << "********************\n";
+    set_name();
+    set_mob_num();
+    set_id();
+    set_email();
+    set_password();
+    set_data();
+    display_data();
+
+}
+void Register::set_data()
+{
+    ofstream MyFile("usersdata.txt", ios::app);
+    MyFile<<left
+          << setfill(' ')<< setw(30)<<name
+          << setfill(' ')<< setw(30)<<mobile_num
+          << setfill(' ')<< setw(30)<<national_id
+          << setfill(' ')<< setw(30)<<email
+          << setfill(' ')<< setw(30)<<password
+          <<endl;
+
+    cout<<"added succesfully\n";
+    MyFile.close();
+
+
+}
+void Register::display_data()
+{
+    string myText;
+
+    ifstream MyReadFile("usersdata.txt");
+    while (getline (MyReadFile, myText))
+    {
+        cout << myText<<endl;
+    }
+
+    MyReadFile.close();
+
+
+}
+//->setting the User name and checking if it is valid or not
+//*********************************************************
+//
+//
+//
+void Register::set_name()
+{
+    string n;
+
+    cout << "-> Name : ";
+    cin >> n;
+    cout << endl;
+
+    while(!valid_name(n))
+    {
+        name_format();
+        cout<<"Please enter valid username !\n";
+        cout <<"-> Name : ";
+        cin >> n;
+        cout << endl;
+    }
+    name = n;
+}
+bool Register::valid_name(string n)
+{
+    regex name_regex ("[a-zA-Z_]+");
+    return regex_match(n, name_regex);
+}
+void Register::name_format()
+{
+    cout << "=> Username must be in the format:\n";
+    cout << "   only alphabetic letters or underscore(_) but not digits or other special characters !\n\n";
+
+}
+//->setting the mobile number and checking if it is valid or not
+//**************************************************************
+//
+//
+//
+void Register::set_mob_num()
+{
+    string m ;
+    cout << "-> Mobile number : ";
+    cin >> m;
+    cout<<endl;
+
+    while(!valid_mob_num(m))
+    {
+        cout << "invalid mobile number !\n";
+        cout << "-> Mobile number : ";
+        cin >> m;
+        cout<<endl;
+    }
+    mobile_num = m;
+}
+bool Register::valid_mob_num(string m)
+{
+    regex phone_regex("01[0125][0-9]{8}");
+    return regex_match(m, phone_regex);
+}
+
+//->setting the ID and checking if it is valid or not
+//*****************************************************
+//
+//
+//
+void Register::set_id()
+{
+    string i;
+
+    cout << "-> Enter your National_ID : ";
+    cin >> i;
+    cout << endl;
+
+    while(!unique_id(i))
+    {
+        cout<<"Sorry, the ID you entered is already in use. Please choose a different ID.\n";
+        cout <<"-> Enter your National_ID : ";
+        cin >> i;
+        cout << endl;
+    }
+    national_id = i;
+}
+bool Register::unique_id(string i)
+{
+    ifstream file("usersdata.txt");
+    string line;
+    while (std::getline(file, line))
+    {
+        if (line.find(i) != std::string::npos)
+        {
+            return false;
+        }
+    }
+    file.close();
+
+
+
+    return true;
+}
+
+//
+//bool Register::unique_id(string i)
+//{
+//string line;
+//vector<string> strs;
+//ifstream infile("usersdata.txt");
+//
+//while (std::getline(infile, line))
+//{
+//    strs.clear();
+//    boost::split(strs,line,boost::is_any_of("\t"));
+//    if (i == strs[2])
+//        return false;
+//
+//}
+//return true;
+//
+//    file.close();
+//}
+//bool Register::unique_id(string i)
+//{
+//    string line;
+//    ifstream infile("usersdata.txt");
+//
+//    while (std::getline(infile, line))
+//    {
+//        istringstream iss(line);
+//        string token;
+//        int column = 0;
+//
+//        while (getline(iss, token, '\t'))
+//        {
+//            // Check if we are in the third column (index 2)
+//            if (column == 2 && token == i)
+//            {
+//                infile.close();
+//                return false;
+//            }
+//            column++;
+//        }
+//    }
+//
+//    infile.close();
+//    return true;
+//}
+//->setting the mobile number and checking if it is valid or not
+//**************************************************************
+//
+//
+
+void Register::set_email()
+{
+    string e;
+
+    cout << "-> Enter your Email : ";
+    cin >> e;
+    cout << endl;
+
+    while(!unique_email(e) || !valid_email(e))
+    {
+        if(!unique_email(e))
+        {
+            cout<<"Sorry, the Email you entered is already in use. Please choose a different Email.\n";
+            cout <<"-> Enter your Email : ";
+            cin >> e;
+            cout << endl;
+        }
+        else
+        {
+            cout<<"Please enter your email address in the following format: username@example.com\n";
+            cout <<"-> Enter your Email : ";
+            cin >> e;
+            cout << endl;
+        }
+    }
+    email = e;
+
+
+}
+bool Register::valid_email(string e)
+{
+    regex email_regex ("[A-Za-z0-9+_.-]+@(.+)");
+    return regex_match(e,email_regex);
+
+}
+//bool Register::unique_email(string e)
+//{
+//    ifstream file("usersdata.txt");
+//    string line;
+//    while (std::getline(file, line))
+//    {
+//        if (line.find(e) != std::string::npos)
+//        {
+//            return false;
+//        }
+//    }
+//    file.close();
+//
+//    return true;
+//}
+bool Register::unique_email(string e)
+{
+    ifstream file("usersdata.txt");
+    string line;
+    while (std::getline(file, line))
+    {
+        // Tokenize the line based on spaces, assuming email addresses are space-separated
+        istringstream iss(line);
+        vector<string> tokens;
+        copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(tokens));
+
+        // Iterate through the tokens and check if any token matches the email address
+        for (const string& token : tokens)
+        {
+            if (token == e)
+            {
+                file.close();
+                return false;
+            }
+        }
+    }
+    file.close();
+
+    return true;
+}
+
+void Register::set_password()
+{
+    string p;
+    string p2;
+
+
+    password_tips();
+    cout << "-> Password : ";
+    p = cover_password();
+    cout << endl;
+
+    while(!strong_password(p))
+    {
+        cout<<"Your password is weak. Please follow the rules to create a stronger password.\n";
+        password_tips();
+        cout <<"-> Password : ";
+        p = cover_password();
+        cout << endl;
+    }
+    cout<<"Please enter your password again: ";
+    p2 = cover_password();
+
+    while(p != p2)
+    {
+        cout<<"passwords are not the same !\n";
+        cout<<"Please enter your password again: ";
+        p2 = cover_password();
+    }
+    cout << "Congratulations! Your password is strong and meets the criteria.\n\n";
+    password = encrypt(p);
+}
+bool Register::strong_password(string p)
+{
+    regex pass_pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=])(?=\\S+$).{8,}");
+    return regex_match(p,pass_pattern);
+}
+void Register::password_tips()
+{
+    cout << "*To create a strong password, consider the following rules:\n";
+    cout << "|1. Password length should be at least 8 characters.\n";
+    cout << "|2. Use a mix of uppercase and lowercase letters.\n";
+    cout << "|3. Include at least one digit (0-9).\n";
+    cout << "|4. Include at least one special character (e.g., !, @, #, $, %, etc.).\n";
+    cout << "|5. Avoid using easily guessable information, such as your name or birthdate.\n";
+    cout << "|6. Avoid using common dictionary words or phrases.\n";
+    cout << " *************************************************************\n\n";
+
+}
+string Register::cover_password()
+{
+    string password;
+    char ch;
+
+    while (true)
+    {
+        ch = _getch();
+        if (ch == 13)
+            break;
+        else if (ch == 8)
+        {
+            if (password.length() > 0)
+            {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        }
+        else
+        {
+            password += ch;
+            cout << '*';
+        }
+    }
+
+    cout << endl;
+    return password;
+}
+string Register::encrypt(string p)
+{
+    for(auto &chr:p)
+    {
+        chr = chr+1;
+    }
+    return p;
+}
